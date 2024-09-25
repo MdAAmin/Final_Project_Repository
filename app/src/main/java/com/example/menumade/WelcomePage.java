@@ -1,24 +1,49 @@
 package com.example.menumade;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 public class WelcomePage extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_welcome_page);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
+
+        LayoutInflater inflater = getLayoutInflater();
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) View layout = inflater.inflate(R.layout.toaster, findViewById(R.id.go));
+
+        Toast customToast = new Toast(getApplicationContext());
+        customToast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        customToast.setDuration(Toast.LENGTH_SHORT);
+        customToast.setView(layout);
+
+        Button buttonToUser = findViewById(R.id.loginButton);
+        buttonToUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                customToast.show();
+                Intent intent = new Intent(WelcomePage.this, AdminAndOldTable.class);
+                startActivity(intent);
+            }
+        });
+
+        Button buttonPerson = findViewById(R.id.getStartedButton);
+        buttonPerson.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                customToast.show();
+                Intent intent = new Intent(WelcomePage.this, TableRegistration.class);
+                startActivity(intent);
+            }
         });
     }
 }

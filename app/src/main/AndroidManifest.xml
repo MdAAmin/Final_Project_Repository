@@ -13,6 +13,12 @@
         android:theme="@style/Theme.MenuMade"
         tools:targetApi="31">
         <activity
+            android:name=".TableRegistration"
+            android:exported="false" />
+        <activity
+            android:name=".AdminAndOldTable"
+            android:exported="false" />
+        <activity
             android:name=".WelcomePage"
             android:exported="false" />
         <activity
