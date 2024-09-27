@@ -2,7 +2,6 @@ package com.example.menumade;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -10,8 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class AdminAndOldTable extends AppCompatActivity {
 
+    private EditText tableNameEditText, tableNumberEditText, tableCapacityEditText;
     private DatabaseHelper databaseHelper;
-    private EditText usernameEditText, passwordEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,35 +19,35 @@ public class AdminAndOldTable extends AppCompatActivity {
 
         databaseHelper = new DatabaseHelper(this);
 
-        usernameEditText = findViewById(R.id.AD_ed);
-        passwordEditText = findViewById(R.id.pass_ed);
+        tableNameEditText = findViewById(R.id.AD_ed);
+        tableNumberEditText = findViewById(R.id.pass_ed);
+        tableCapacityEditText = findViewById(R.id.table_capacity);
 
-        Button loginButton = findViewById(R.id.BTN_LOGIN);
-        loginButton.setOnClickListener(v -> {
-            String username = usernameEditText.getText().toString();
-            String password = passwordEditText.getText().toString();
+        Button addTableButton = findViewById(R.id.BTN_Add_Table);
+        addTableButton.setOnClickListener(v -> {
+            String tableName = tableNameEditText.getText().toString();
+            String tableNumber = tableNumberEditText.getText().toString();
+            String tableCapacityStr = tableCapacityEditText.getText().toString();
 
-            if (databaseHelper.checkUser(username, password)) {
-                Toast.makeText(AdminAndOldTable.this, "Customer Login Successful", Toast.LENGTH_SHORT).show();
-                Intent intent2 = new Intent(AdminAndOldTable.this, CustomerConnectionActivity.class);
-                startActivity(intent2);
+            if (!tableName.isEmpty() && !tableNumber.isEmpty() && !tableCapacityStr.isEmpty()) {
+                int tableCapacity = Integer.parseInt(tableCapacityStr);
+                databaseHelper.addTable(tableName, tableNumber, tableCapacity);
+                Toast.makeText(AdminAndOldTable.this, "Table Added Successfully", Toast.LENGTH_SHORT).show();
+
+
+                tableNameEditText.setText("");
+                tableNumberEditText.setText("");
+                tableCapacityEditText.setText("");
             } else {
-                Toast.makeText(AdminAndOldTable.this, "Invalid Username or Password", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AdminAndOldTable.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
             }
         });
 
+
         Button adminButton = findViewById(R.id.BTN_ADMIN);
         adminButton.setOnClickListener(v -> {
-            String username = usernameEditText.getText().toString();
-            String password = passwordEditText.getText().toString();
-
-            if (databaseHelper.checkAdmin(username, password)) {
-                Toast.makeText(AdminAndOldTable.this, "Admin Login Successful", Toast.LENGTH_SHORT).show();
-                Intent intent1 = new Intent(AdminAndOldTable.this, AdminHome.class);
-                startActivity(intent1);
-            } else {
-                Toast.makeText(AdminAndOldTable.this, "Invalid Admin Username or Password", Toast.LENGTH_SHORT).show();
-            }
+            Intent intent1 = new Intent(AdminAndOldTable.this, AdminLogin.class);
+            startActivity(intent1);
         });
 
         Button backButton = findViewById(R.id.BTN_Back);
